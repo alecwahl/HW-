@@ -9,6 +9,8 @@
 
 struct alecfs_superblock {
     uint64_t magic;
+	uint64_t block_size;
+	uint64_t version;
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
@@ -49,6 +51,8 @@ static int write_data()
 {
 	struct alecfs_superblock sb;
 	sb.magic = 101;
+	sb.version = 1;
+	sb.block_size = 512;
 	
 	int fd = open("/dev/mmcblk0p3", O_RDWR);
 	if (fd == -1) {
