@@ -71,7 +71,7 @@ static int write_data()
 	root_inode.dir_child_count = 1;
 	root_inode.type = 1;
 	
-	ret = write_to_dev(128 &root_inode, sizeof(root_inode), fd);
+	ret = write_to_dev(128, &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
 		printf("Error writting root_inode to the device");
 		return -1;
