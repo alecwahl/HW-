@@ -45,43 +45,26 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
-	struct inode *root_inode;
-	struct buffer_head *bh;
-	struct alecfs_superblock *sb_disk;
-	struct alecfs_inode *root_alecfs_inode;
+static int ramfs_fill_super(struct super_block *sb, void *data, int silent)
+{	
 
-	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
-	sb_disk = (struct alecfs_superblock *)bh->b_data;
-	printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
-	
-	if(sb_disk->magic != ALECFS_MAGIC){
-		return -1;
-	}
-	
-	/* A magic number that uniquely identifies our filesystem type */
-	sb->s_magic = ALECFS_MAGIC;
+		struct alecfs_sb_info *sbi;
+		struct alecfs_superblock *ms;
+        struct inode *inode;
 
-	/* For all practical purposes, we will be using this s_fs_info as the super block */
-	sb->s_fs_info = sb_disk;
-
-	sb->s_maxbytes = ALECFS_BLOCK_SIZE;
-	sb->s_op = &alecfs_sops;
-	
-	printk(KERN_INFO "alecfs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
-	root_alecfs_inode = alecfs_get_inode(sb, 127);
-	root_alecfs_inode = alecfs_get_inode(sb, 128);
-	root_alecfs_inode = alecfs_get_inode(sb, 129);
-	root_inode = new_inode(sb);
-	root_inode->i_ino = ALECFS_INODE_BLOCK;
-	inode_init_owner(root_inode, NULL, S_IFDIR);
-	root_inode->i_sb = sb;
-	root_inode->i_op = &alecfs_inode_ops;
-	root_inode->i_fop = &alecfs_file_operations;
-	root_inode->i_atime = root_inode->i_mtime = root_inode->i_ctime = current_time(root_inode);
+        sb->s_maxbytes          = ALECFS_BLOCK_SIZE;
+        sb->s_blocksize         = ALECFS_BLOCK_SIZE;
+        sb->s_blocksize_bits    = ALECFS_BLOCK_SIZE * 8;
+        sb->s_magic             = ALECFS_MAGIC;
+        sb->s_op                = &alecfs_sops;
+        sb->s_time_gran         = 1;
+		
+		alecfs_get_inode(sb, 127)
+		alecfs_get_inode(sb, 128)
+		alecfs_get_inode(sb, 129)
 
 
-	return 0;
+        return 0;
 }
 
 static struct dentry *alecfs_mount(struct file_system_type *fs_type, int flags, const char *dev_name, void *data){
