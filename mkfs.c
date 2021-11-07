@@ -47,7 +47,7 @@ static int write_data()
 		printf("Error opening the device");
 		return -1;
 	}
-	int ret = write_to_dev write(0, &sb, sizeof(sb), fd);
+	int ret = write_to_dev(0, &sb, sizeof(sb), fd);
 	if(-1 == ret){
 		printf("Error writting SB to the device");
 		return -1;
@@ -58,11 +58,12 @@ static int write_data()
 	root_inode.data_block_num = 16;
 	root_inode.dir_child_count = 1;
 	root_inode.type = 1;
-	ret = int ret = write_to_dev write(2064, &root_inode, sizeof(root_inode), fd);
+	ret = write_to_dev(2064, &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
 		printf("Error writting root_inode to the device");
 		return -1;
 	}
+	printf("root_inode written succesfully\n");
 	close(fd);
 	
 	return 0;
