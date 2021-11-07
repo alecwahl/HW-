@@ -3,6 +3,13 @@
 #include <linux/fs.h>
 #include filesystem.h
 
+#define ALECFS_FILENAME_MAXLEN 255
+#define ALECFS_BLOCK_SIZE 512
+#define ALECFS_SUPER_BLOCK	0
+#define ALECFS_INODE_BLOCK	2064
+#define ALECFS_FIRST_DATA_BLOCK	16
+#define ALECFS_MAGIC 101
+
 struct alecfs_sb_info {
 	__u8 version;
 	unsigned long imap;
