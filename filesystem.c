@@ -23,7 +23,7 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t in
 	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
 	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
 	afs_inode = (struct alecfs_inode *)bh->b_data;
-	return struct afs_inode;
+	return afs_inode;
 }
 
 static int alecfs_fill_super(struct super_block *s, void *data, int silent){
