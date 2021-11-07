@@ -66,7 +66,7 @@ static int write_data()
 	}
 	printf("Super block written succesfully\n");
 	struct alecfs_inode root_inode;
-	root_inode.inode_num = 2064;
+	root_inode.inode_num = 128;
 	root_inode.data_block_num = 16;
 	root_inode.dir_child_count = 1;
 	root_inode.type = 1;
@@ -75,7 +75,7 @@ static int write_data()
 	strcpy(first_file.file_one, "readme.txt");
 	first_file.file_one_inode_no = 2065;
 	
-	ret = write_to_dev(2064, &root_inode, sizeof(root_inode), fd);
+	ret = write_to_dev(128, &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
 		printf("Error writting root_inode to the device");
 		return -1;
@@ -90,12 +90,12 @@ static int write_data()
 	printf("root_dir written succesfully\n");
 	
 	struct alecfs_inode readme;
-	readme.inode_num = 2065;
+	readme.inode_num = 129;
 	readme.data_block_num = 17;
 	readme.dir_child_count = 0;
 	readme.type = 0;
 
-	ret = write_to_dev(2065, &readme, sizeof(readme), fd);
+	ret = write_to_dev(129, &readme, sizeof(readme), fd);
 	if(-1 == ret){
 		printf("Error writting readme inode to the device");
 		return -1;
