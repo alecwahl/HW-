@@ -15,23 +15,23 @@
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
 
-struct alecfs_superblock {
+struct {
     unsigned int magic;
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
-};
-struct alecfs_dir_record {
+} alecfs_superblock;
+struct {
     char file_one[ALECFS_FILENAME_MAXLEN];
     uint64_t file_one_inode_no;
     char file_two[ALECFS_FILENAME_MAXLEN];
     uint64_t file_two_inode_no;
     char file_three[ALECFS_FILENAME_MAXLEN];
     uint64_t file_three_inode_no;
-};
-struct alecfs_inode {
+} alecfs_dir_record;
+struct {
 	unsigned int inode_num;
 	unsigned int data_block_num;
 	unsigned int file_size;
 	unsigned int dir_child_count;
 	unsigned int type;
-};
+} alecfs_inode;

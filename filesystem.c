@@ -26,13 +26,13 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t in
 	return afs_inode;
 }
 
-static int alecfs_fill_super(struct super_block *s, void *data, int silent){
+static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	struct inode *root_inode;
 	struct buffer_head *bh;
 	struct alecfs_superblock *sb_disk;
 	int ret = -EPERM;
 
-	bh = sb_bread(s, ALECFS_SUPER_BLOCK);
+	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
 	sb_disk = (struct alecfs_superblock *)bh->b_data;
 	//printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
 	
