@@ -14,6 +14,7 @@
 #define ALECFS_INODE_BLOCK	128
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
+#ALECFS_BLOCK_SIZE_BITS 4096
 
 typedef struct alecfs_superblock {
     uint64_t magic;

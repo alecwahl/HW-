@@ -53,7 +53,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 
         sb->s_maxbytes          = ALECFS_BLOCK_SIZE;
         sb->s_blocksize         = ALECFS_BLOCK_SIZE;
-        sb->s_blocksize_bits    = ALECFS_BLOCK_SIZE * 8;
+        sb->s_blocksize_bits    = ALECFS_BLOCK_SIZE_BITS;
         sb->s_magic             = ALECFS_MAGIC;
         sb->s_op                = &alecfs_sops;
         sb->s_time_gran         = 1;
