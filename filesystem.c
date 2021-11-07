@@ -2,7 +2,7 @@
 #include <linux/slab.h>
 #include <linux/fs.h>
 #include <linux/buffer_head.h>
-#include filesystem.h
+#include "filesystem.h"
 
 #define ALECFS_FILENAME_MAXLEN 255
 #define ALECFS_BLOCK_SIZE 512
@@ -10,12 +10,6 @@
 #define ALECFS_INODE_BLOCK	2064
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
-
-struct alecfs_superblock {
-    unsigned int magic;
-	unsigned short data_block_map[2048];
-	unsigned short inode_block_map[2032];
-};
 
 struct alecfs_sb_info {
 	__u8 version;
