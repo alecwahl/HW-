@@ -17,6 +17,8 @@
 
 typedef struct alecfs_superblock {
     uint64_t magic;
+	uint64_t block_size;
+	uint64_t version;
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
