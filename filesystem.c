@@ -1,6 +1,7 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/fs.h>
+#include <linux/buffer_head.h>
 #include filesystem.h
 
 #define ALECFS_FILENAME_MAXLEN 255
