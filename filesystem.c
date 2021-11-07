@@ -13,13 +13,14 @@ struct alecfs_sb_info {
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
+	sb set blocksize()
 	printk(KERN_ALERT "Looking up inode %u on disk\n", inode_no);
 	printk(KERN_ALERT "At address %u",ALECFS_INODE_BLOCK + inode_no);
 	printk(KERN_ALERT "IS SB NULL? %p",sb);
-	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
+	bh = sb_bread(sb, inode_no); 
 	printk(KERN_ALERT "bh returned\n", bh);
 	afs_inode = (struct alecfs_inode *)bh->b_data;
-	
+	printk(KERN_INFO "alecfs root inode_num [%u] data block num [%u] dir_child_count [%u] type [%u].\n", afs_inode->inode_num, afs_inode->inode_num, afs_inode->dir_child_count, afs_inode->type);
 	printk(KERN_ALERT "Found inode %ld on disk\n", inode_no);
 	return afs_inode;
 }
@@ -69,8 +70,9 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	sb->s_op = &alecfs_sops;
 	
 	printk(KERN_INFO "alecfs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
-	root_alecfs_inode = alecfs_get_inode(sb, 0);
-	printk(KERN_INFO "alecfs root inode_num [%u] data block num [%u] dir_child_count [%u] type [%u].\n", root_alecfs_inode->inode_num, root_alecfs_inode->inode_num, root_alecfs_inode->dir_child_count, root_alecfs_inode->type);
+	root_alecfs_inode = alecfs_get_inode(sb, 127);
+	root_alecfs_inode = alecfs_get_inode(sb, 128);
+	root_alecfs_inode = alecfs_get_inode(sb, 129);
 	root_inode = new_inode(sb);
 	root_inode->i_ino = ALECFS_INODE_BLOCK;
 	inode_init_owner(root_inode, NULL, S_IFDIR);
