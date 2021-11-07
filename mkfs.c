@@ -21,7 +21,23 @@ struct alecfs_inode {
 	unsigned int type;
 };
 
-static int write_superblock()
+const unsigned int fist_data_block = 16;
+const unsigned int first_inode = 2064;
+
+int write_to_dev(int block_num, void *data, int data_size, int fd)
+{
+	// lseek seeks to a specific byte but we are given a block num so we convert
+	// the correct byte = the block size * the block number
+	// seek_set means that the byte number we give is treated as an absolute number
+	// instead of an offset from the current position
+	off_t s_out = lseek(fd, block_num * 512, SEEK_SET);
+	if(s_out == -1)
+		return -1;
+	// Actually write the data (and return any error code in one line)	
+	return write(fd, data, data_size);
+}
+
+static int write_data()
 {
 	struct alecfs_superblock sb;
 	sb.magic = 101;
@@ -31,16 +47,27 @@ static int write_superblock()
 		printf("Error opening the device");
 		return -1;
 	}
-	int ret = write(fd, &sb, sizeof(sb));
-	
+	int ret = write_to_dev write(0, &sb, sizeof(sb), fd);
 	if(-1 == ret){
-	  printf("perror output:");
+		printf("Error writting SB to the device");
+		return -1;
+	}
+	printf("Super block written succesfully\n");
+	struct alecfs_inode root_inode;
+	root_inode.inode_num = 2064;
+	root_inode.data_block_num = 16;
+	root_inode.dir_child_count = 1;
+	root_inode.type = 1;
+	ret = int ret = write_to_dev write(2064, &root_inode, sizeof(root_inode), fd);
+	if(-1 == ret){
+		printf("Error writting root_inode to the device");
+		return -1;
 	}
 	close(fd);
-	printf("Super block written succesfully\n");
+	
 	return 0;
 }
 
 int main(){
-	write_superblock();
+	write_data();
 }
