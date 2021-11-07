@@ -26,10 +26,8 @@ static int write_superblock()
 	struct alecfs_superblock sb;
 	sb.magic = 101;
 	
-	fd = open("/dev/mmcblk0p3", O_RDWR);
-	ret = write(fd, &sb, sizeof(sb));
-
-	ret = write(fd, &sb, sizeof(sb));
+	int fd = open("/dev/mmcblk0p3", O_RDWR);
+	int ret = write(fd, &sb, sizeof(sb));
 
 	printf("Super block written succesfully\n");
 	return 0;
