@@ -36,7 +36,6 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	struct inode *root_inode;
 	struct buffer_head *bh;
 	struct alecfs_superblock *sb_disk;
-	int ret = -EPERM;
 
 	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
 	sb_disk = (struct alecfs_superblock *)bh->b_data;
