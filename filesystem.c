@@ -17,13 +17,13 @@ struct alecfs_sb_info {
 	struct buffer_head *sbh;
 };
 
-static alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t inode_no){
+static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
 	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
 	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
-	afs_inode = (alecfs_inode *)bh->b_data;
-	return afs_inode;
+	afs_inode = (struct alecfs_inode *)bh->b_data;
+	return struct afs_inode;
 }
 
 static int alecfs_fill_super(struct super_block *s, void *data, int silent){
