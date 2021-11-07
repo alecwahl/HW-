@@ -28,7 +28,10 @@ static int write_superblock()
 	
 	int fd = open("/dev/mmcblk0p3", O_RDWR);
 	int ret = write(fd, &sb, sizeof(sb));
-
+	if(-1 == ret){
+	  printf("perror output:");
+	}
+	close(fd);
 	printf("Super block written succesfully\n");
 	return 0;
 }
