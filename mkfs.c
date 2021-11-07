@@ -68,7 +68,7 @@ static int write_data()
 	root_inode.type = 1;
 	
 	struct alecfs_dir_record first_file;
-	char[] name = "first.txt";
+	char name[] = "first.txt";
 	first_file.file_one = name;
 	first_file.file_one_inode_no = 2065;
 	
