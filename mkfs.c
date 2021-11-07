@@ -32,7 +32,7 @@ struct alecfs_inode {
 
 
 const unsigned int fist_data_block = 16;
-const unsigned int first_inode = 2064;
+const unsigned int first_inode = 128;
 
 int write_to_dev(int block_num, void *data, int data_size, int fd)
 {
