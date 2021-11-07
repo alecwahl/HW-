@@ -71,19 +71,16 @@ static int write_data()
 	root_inode.dir_child_count = 1;
 	root_inode.type = 1;
 	
-	struct alecfs_dir_record first_file;
-	strcpy(first_file.file_one, "readme.txt");
-	first_file.file_one_inode_no = 129;
-	for(int i = 0;i<128;i++){
-		ret = write_to_dev(i + 3, &root_inode, sizeof(root_inode), fd);
-	}
-	
+	ret = write_to_dev(128 &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
 		printf("Error writting root_inode to the device");
 		return -1;
 	}
 	printf("root_inode written succesfully\n");
 	
+	struct alecfs_dir_record first_file;
+	strcpy(first_file.file_one, "readme.txt");
+	first_file.file_one_inode_no = 129;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);
 	if(-1 == ret){
 		printf("Error writting root_dir to the device");
