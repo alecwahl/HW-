@@ -45,8 +45,7 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static int ramfs_fill_super(struct super_block *sb, void *data, int silent)
-{	
+static int alecfs_fill_super(struct super_block *sb, void *data, int silent){	
 
 		struct alecfs_sb_info *sbi;
 		struct alecfs_superblock *ms;
