@@ -32,8 +32,8 @@ static int alecfs_fill_super(struct super_block *s, void *data, int silent){
 	struct alecfs_superblock *sb_disk;
 	int ret = -EPERM;
 
-	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
-	sb_disk = (struct simplefs_super_block *)bh->b_data;
+	bh = sb_bread(s, ALECFS_SUPER_BLOCK);
+	sb_disk = (struct alecfs_super_block *)bh->b_data;
 	printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
 	
 	if(sb_disk->magic != ALECFS_MAGIC){
