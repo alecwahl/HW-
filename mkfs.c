@@ -26,7 +26,6 @@ struct alecfs_inode {
 	unsigned int file_size;
 	unsigned int dir_child_count;
 	unsigned int type;
-	alecfs_dir_record dentry_one;
 };
 
 
@@ -69,10 +68,9 @@ static int write_data()
 	root_inode.type = 1;
 	
 	struct alecfs_dir_record first_file;
-	first_file.file_one = "first.txt";
+	char[] name = "first.txt";
+	first_file.file_one = name;
 	first_file.file_one_inode_no = 2065;
-
-	root_inode.dentry_one = first_file;
 	
 	ret = write_to_dev(2064, &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
