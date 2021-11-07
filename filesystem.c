@@ -34,12 +34,12 @@ static int alecfs_fill_super(struct super_block *s, void *data, int silent){
 
 	bh = sb_bread(s, ALECFS_SUPER_BLOCK);
 	sb_disk = (struct alecfs_superblock *)bh->b_data;
-	printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
+	#printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
 	
 	if(sb_disk->magic != ALECFS_MAGIC){
 		return -1;
 	}
-	printk(KERN_ALERT "The block size obtained in disk is: [%llu]\n",sb_disk->block_size);
+	#printk(KERN_ALERT "The block size obtained in disk is: [%llu]\n",sb_disk->block_size);
 	if(sb_disk->block_size != ALECFS_BLOCK_SIZE){
 		return -1;
 	}
