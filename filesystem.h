@@ -16,7 +16,7 @@
 #define ALECFS_MAGIC 101
 
 struct alecfs_superblock {
-    uint64_t magic;
+    unsigned int magic;
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
