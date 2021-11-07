@@ -68,8 +68,7 @@ static int write_data()
 	root_inode.type = 1;
 	
 	struct alecfs_dir_record first_file;
-	char name[] = "first.txt";
-	first_file.file_one = name;
+	strcpy(first_file.file_one, "readme.txt");
 	first_file.file_one_inode_no = 2065;
 	
 	ret = write_to_dev(2064, &root_inode, sizeof(root_inode), fd);
