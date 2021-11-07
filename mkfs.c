@@ -27,7 +27,12 @@ static int write_superblock()
 	sb.magic = 101;
 	
 	int fd = open("/dev/mmcblk0p3", O_RDWR);
+	if (fd == -1) {
+		printf("Error opening the device");
+		return -1;
+	}
 	int ret = write(fd, &sb, sizeof(sb));
+	
 	if(-1 == ret){
 	  printf("perror output:");
 	}
