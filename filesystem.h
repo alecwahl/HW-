@@ -9,31 +9,29 @@
 * All blocks are 128 bytes large, the total fs is 4096 blocks
 */
 #define ALECFS_FILENAME_MAXLEN 255
-
-struct alecfs_dir_record {
-    char filename[ALECFS_FILENAME_MAXLEN];
-    uint64_t inode_no;
-};
-
-struct alecfs_inode {
-    mode_t mode;
-    uint64_t inode_no;
-    uint64_t data_block_no;
-
-    union {
-        uint64_t file_size;
-        uint64_t dir_children_count;
-    };
-};
+#define ALECFS_BLOCK_SIZE 512
+#define ALECFS_SUPER_BLOCK	0
+#define ALECFS_INODE_BLOCK	2064
+#define ALECFS_FIRST_DATA_BLOCK	16
+#define ALECFS_MAGIC 101
 
 struct alecfs_superblock {
-    uint64_t version;
     uint64_t magic;
-    uint64_t blocksize;
-
-    uint64_t inode_table_size;
-    uint64_t inode_count;
-
-    uint64_t data_block_table_size;
-    uint64_t data_block_count;
+	unsigned short data_block_map[2048];
+	unsigned short inode_block_map[2032];
+};
+struct alecfs_dir_record {
+    char file_one[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_one_inode_no;
+    char file_two[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_two_inode_no;
+    char file_three[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_three_inode_no;
+};
+struct alecfs_inode {
+	unsigned int inode_num;
+	unsigned int data_block_num;
+	unsigned int file_size;
+	unsigned int dir_child_count;
+	unsigned int type;
 };

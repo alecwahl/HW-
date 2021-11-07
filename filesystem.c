@@ -3,8 +3,58 @@
 #include <linux/fs.h>
 #include filesystem.h
 
+struct alecfs_sb_info {
+	__u8 version;
+	unsigned long imap;
+	struct buffer_head *sbh;
+};
+
+static simplefs_inode *alecfs_get_inode(struct super_block *sb, uint64_t inode_no)
+	struct buffer_head *bh;
+	struct alecfs_inode *afs_inode;
+	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
+	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
+	afs_inode = (alecfs_inode *)bh->b_data;
+	return afs_inode;
+}
 
 static int alecfs_fill_super(struct super_block *s, void *data, int silent){
+	struct inode *root_inode;
+	struct buffer_head *bh;
+	struct alecfs_superblock *sb_disk;
+	int ret = -EPERM;
+
+	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
+	sb_disk = (struct simplefs_super_block *)bh->b_data;
+	printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
+	
+	if(sb_disk->magic != ALECFS_MAGIC){
+		return -1;
+	}
+	printk(KERN_ALERT "The block size obtained in disk is: [%llu]\n",sb_disk->block_size);
+	if(sb_disk->block_size != ALECFS_BLOCK_SIZE){
+		return -1;
+	}
+	sb_disk->journal = NULL;
+	
+	/* A magic number that uniquely identifies our filesystem type */
+	sb->s_magic = ALECFS_MAGIC;
+
+	/* For all practical purposes, we will be using this s_fs_info as the super block */
+	sb->s_fs_info = sb_disk;
+
+	sb->s_maxbytes = ALECFS_BLOCK_SIZE;
+	sb->s_op = NULL;
+
+	root_inode = new_inode(sb);
+	root_inode->i_ino = ALECFS_INODE_BLOCK;
+	inode_init_owner(root_inode, NULL, S_IFDIR);
+	root_inode->i_sb = sb;
+	root_inode->i_op = NULL;
+	root_inode->i_fop = NULL;
+	root_inode->i_atime = root_inode->i_mtime = root_inode->i_ctime = current_time(root_inode);
+
+	root_inode->i_private = alecfs_get_inode(sb, 0);
 	return 0;
 }
 
