@@ -50,7 +50,17 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		struct alecfs_sb_info *sbi;
 		struct alecfs_superblock *ms;
         struct inode *inode;
-
+		struct buffer_head *bh;
+		struct alecfs_superblock *sb_disk;
+		
+		bh = sb_bread(sb, 0);
+		sb_disk = (struct simplefs_super_block *)bh->b_data;
+		
+		printk(KERN_INFO "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
+		printk(KERN_INFO "simplefs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
+		
+		sb->s_magic 			= ALECFS_MAGIC;
+		sb->s_fs_info 			= sb_disk;
         sb->s_maxbytes          = ALECFS_BLOCK_SIZE;
         sb->s_blocksize         = ALECFS_BLOCK_SIZE;
         sb->s_magic             = ALECFS_MAGIC;
