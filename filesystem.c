@@ -58,9 +58,9 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
         sb->s_op                = &alecfs_sops;
         sb->s_time_gran         = 1;
 		
-		alecfs_get_inode(sb, 127)
-		alecfs_get_inode(sb, 128)
-		alecfs_get_inode(sb, 129)
+		alecfs_get_inode(sb, 127);
+		alecfs_get_inode(sb, 128);
+		alecfs_get_inode(sb, 129);
 
 
         return 0;
