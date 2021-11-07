@@ -45,7 +45,6 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	if(sb_disk->magic != ALECFS_MAGIC){
 		return -1;
 	}
-	sb_disk->journal = NULL;
 	
 	/* A magic number that uniquely identifies our filesystem type */
 	sb->s_magic = ALECFS_MAGIC;
