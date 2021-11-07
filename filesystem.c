@@ -4,13 +4,6 @@
 #include <linux/buffer_head.h>
 #include "filesystem.h"
 
-#define ALECFS_FILENAME_MAXLEN 255
-#define ALECFS_BLOCK_SIZE 512
-#define ALECFS_SUPER_BLOCK	0
-#define ALECFS_INODE_BLOCK	2064
-#define ALECFS_FIRST_DATA_BLOCK	16
-#define ALECFS_MAGIC 101
-
 struct alecfs_sb_info {
 	__u8 version;
 	unsigned long imap;
@@ -23,7 +16,7 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t in
 	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
 	printk(KERN_ALERT "At address %d",ALECFS_INODE_BLOCK + inode_no);
 	printk(KERN_ALERT "IS SB NULL? %p",sb);
-	bh = sb_bread(sb, 128); 
+	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
 	printk(KERN_ALERT "bh returned\n", bh);
 	afs_inode = (struct alecfs_inode *)bh->b_data;
 	
@@ -56,6 +49,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	struct inode *root_inode;
 	struct buffer_head *bh;
 	struct alecfs_superblock *sb_disk;
+	struct alecfs_inode *root_alec_inode;
 
 	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
 	sb_disk = (struct alecfs_superblock *)bh->b_data;
@@ -74,10 +68,9 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	sb->s_maxbytes = ALECFS_BLOCK_SIZE;
 	sb->s_op = &alecfs_sops;
 	
-	printk(KERN_INFO
-	       "simplefs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n",
-	       sb_disk->version, sb_disk->block_size);
-
+	printk(KERN_INFO "alecfs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
+	root_alecfs_inode = alecfs_get_inode(sb, 0);
+	printk(KERN_INFO "alecfs root inode_num [%llu] data block num [%llu] dir_child_count [%llu] type [%llu].\n", root_alecfs_inode->inode_num, root_alecfs_inode->inode_num, root_alecfs_inode->dir_child_count, root_alecfs_inode->type);
 	root_inode = new_inode(sb);
 	root_inode->i_ino = ALECFS_INODE_BLOCK;
 	inode_init_owner(root_inode, NULL, S_IFDIR);
@@ -86,7 +79,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	root_inode->i_fop = &alecfs_file_operations;
 	root_inode->i_atime = root_inode->i_mtime = root_inode->i_ctime = current_time(root_inode);
 
-	root_inode->i_private = alecfs_get_inode(sb, 0);
+
 	return 0;
 }
 
