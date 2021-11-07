@@ -70,8 +70,8 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	root_inode->i_ino = ALECFS_INODE_BLOCK;
 	inode_init_owner(root_inode, NULL, S_IFDIR);
 	root_inode->i_sb = sb;
-	root_inode->i_op = alecfs_inode_ops;
-	root_inode->i_fop = alecfs_sops;
+	root_inode->i_op = &alecfs_inode_ops;
+	root_inode->i_fop = &alecfs_sops;
 	root_inode->i_atime = root_inode->i_mtime = root_inode->i_ctime = current_time(root_inode);
 
 	root_inode->i_private = alecfs_get_inode(sb, 0);
