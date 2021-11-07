@@ -11,6 +11,12 @@
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
 
+struct alecfs_superblock {
+    unsigned int magic;
+	unsigned short data_block_map[2048];
+	unsigned short inode_block_map[2032];
+};
+
 struct alecfs_sb_info {
 	__u8 version;
 	unsigned long imap;
