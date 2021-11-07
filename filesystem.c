@@ -69,6 +69,10 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 
 	sb->s_maxbytes = ALECFS_BLOCK_SIZE;
 	sb->s_op = &alecfs_sops;
+	
+	printk(KERN_INFO
+	       "simplefs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n",
+	       sb_disk->version, sb_disk->block_size);
 
 	root_inode = new_inode(sb);
 	root_inode->i_ino = ALECFS_INODE_BLOCK;
