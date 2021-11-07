@@ -9,7 +9,7 @@ struct alecfs_sb_info {
 	struct buffer_head *sbh;
 };
 
-static simplefs_inode *alecfs_get_inode(struct super_block *sb, uint64_t inode_no)
+static simplefs_inode *alecfs_get_inode(struct super_block *sb, uint64_t inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
 	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
