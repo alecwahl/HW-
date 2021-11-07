@@ -33,7 +33,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 
 	bh = sb_bread(sb, ALECFS_SUPER_BLOCK);
 	sb_disk = (struct alecfs_superblock *)bh->b_data;
-	//printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
+	printk(KERN_ALERT "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
 	
 	if(sb_disk->magic != ALECFS_MAGIC){
 		return -1;
