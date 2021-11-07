@@ -39,10 +39,6 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 	if(sb_disk->magic != ALECFS_MAGIC){
 		return -1;
 	}
-	//printk(KERN_ALERT "The block size obtained in disk is: [%llu]\n",sb_disk->block_size);
-	if(sb_disk->block_size != ALECFS_BLOCK_SIZE){
-		return -1;
-	}
 	sb_disk->journal = NULL;
 	
 	/* A magic number that uniquely identifies our filesystem type */
