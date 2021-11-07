@@ -22,8 +22,8 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, uint64_t in
 	struct alecfs_inode *afs_inode;
 	printk(KERN_ALERT "Looking up inode %ld on disk\n", inode_no);
 	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
-	printk(KERN_ALERT "Found inode %ld on disk\n", inode_no);
 	afs_inode = (struct alecfs_inode *)bh->b_data;
+	printk(KERN_ALERT "Found inode %ld on disk\n", inode_no);
 	return afs_inode;
 }
 
