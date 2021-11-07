@@ -13,7 +13,6 @@ struct alecfs_sb_info {
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
-	sb set blocksize()
 	printk(KERN_ALERT "Looking up inode %u on disk\n", inode_no);
 	printk(KERN_ALERT "At address %u",ALECFS_INODE_BLOCK + inode_no);
 	printk(KERN_ALERT "IS SB NULL? %p",sb);
