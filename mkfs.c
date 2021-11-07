@@ -84,7 +84,20 @@ static int write_data()
 		return -1;
 	}
 	printf("root_dir written succesfully\n");
+	
+	struct alecfs_inode readme;
+	readme.inode_num = 2065;
+	readme.data_block_num = 17;
+	readme.dir_child_count = 0;
+	readme.type = 0;
 
+	ret = write_to_dev(2065, &readme, sizeof(readme), fd);
+	if(-1 == ret){
+		printf("Error writting readme inode to the device");
+		return -1;
+	}
+	printf("readme inode written succesfully\n");
+	
 	close(fd);
 	
 	return 0;
