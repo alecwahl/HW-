@@ -66,14 +66,14 @@ static int write_data()
 	}
 	printf("Super block written succesfully\n");
 	struct alecfs_inode root_inode;
-	root_inode.inode_num = 128;
+	root_inode.inode_num = 0;
 	root_inode.data_block_num = 16;
 	root_inode.dir_child_count = 1;
 	root_inode.type = 1;
 	
 	struct alecfs_dir_record first_file;
 	strcpy(first_file.file_one, "readme.txt");
-	first_file.file_one_inode_no = 2065;
+	first_file.file_one_inode_no = 129;
 	
 	ret = write_to_dev(128, &root_inode, sizeof(root_inode), fd);
 	if(-1 == ret){
