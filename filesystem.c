@@ -89,9 +89,6 @@ static const struct inode_operations alecfs_file_inode_ops = {
 };
 
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
-	/* TODO 6/1: Comment line. */
-	// \
-	return simple_lookup(dir, dentry, flags);
 	struct super_block *sb;
 	struct alecfs_dentry de;
 	struct buffer_head *bh;
