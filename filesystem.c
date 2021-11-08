@@ -10,11 +10,6 @@ struct alecfs_sb_info {
 	struct buffer_head *sbh;
 };
 
-struct alecfs_inode_info {
-	__u16 data_block;
-	struct inode vfs_inode;
-};
-
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
@@ -109,22 +104,25 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
 	struct alecfs_dir_record *de;
-	struct alecfs_inode_info *mii;
 	struct inode *inode;
 	struct super_block *sb;
 	
 	inode = file_inode(filp);
-	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
-	mii = container_of(inode, struct alecfs_inode_info, vfs_inode);
-	
+
 	sb = inode->i_sb;
-	bh = sb_bread(sb, mii->data_block);
+	alecfs_inode cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
+	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
+	if(cur_dir_inode->type != 1){
+		return 0;
+	}
+	bh = sb_bread(sb, cur_dir_inode->data_block_num);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
 		return -1;
 	}
 	printk(KERN_ALERT "Got here\n");
 	de = (struct alecfs_dir_record *) bh->b_data;
+	printk(KERN_ALERT "%s\n",de->dir_name);
 	int counter;
 	counter = 0;
 	if(de->file_one_inode_no != 0){
