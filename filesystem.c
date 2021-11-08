@@ -112,7 +112,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		de = dir_rec->files[i];
 		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",i,de.inode_num);
 		if (de.inode_num != zero) {
-			if(strcmp(name, de->file_name) == 0){
+			if(strcmp(name, de.file_name) == 0){
 				d_add(dentry, inode);
 				return NULL;
 			}
