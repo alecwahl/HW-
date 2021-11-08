@@ -23,7 +23,7 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned in
 
 static struct inode_operations alecfs_inode_ops = {
 };
-const struct file_operations alec_dir_operations = {
+const struct file_operations alecfs_dir_operations = {
 };
 
 void alecfs_destory_inode(struct inode *inode)
