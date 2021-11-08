@@ -60,7 +60,7 @@ ssize_t alecfs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppo
                cur_fil_inode->inode_num);
     bh = sb_bread(sb, cur_fil_inode->data_block_num);
     if (!bh) {
-        printk(KERN_ERR "Failed to read data block %llu\n",
+        printk(KERN_ERR "Failed to read data block %u\n",
                cur_fil_inode->data_block_num);
         return 0;
     }
