@@ -93,11 +93,15 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	struct alecfs_dentry de;
 	struct buffer_head *bh;
 	const char *name;
-	name = dentry->d_name.name;
 	struct alecfs_dir_record *dir_rec;
+	struct alecfs_inode *cur_dir_inode;
+	int i;
+	unsigned int zero;
+	zero = 0;
 	
+	name = dentry->d_name.name;
 	sb = dir->i_sb;
-	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,dir->i_ino);
+	cur_dir_inode = alecfs_get_inode(sb,dir->i_ino);
 	printk(KERN_ALERT "INODE %d\n",dir->i_ino);
 	
 	if(cur_dir_inode->type != 1){
@@ -109,8 +113,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		printk(KERN_ALERT "could not read block\n");
 		return NULL;
 	}
-	unsigned int zero = 0;
-	int i;
+
 	for (i = 0; i < ALECFS_NUM_ENTRIES; i++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[i];
