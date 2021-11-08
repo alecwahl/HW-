@@ -4,6 +4,16 @@
 #include <linux/buffer_head.h>
 #include "filesystem.h"
 
+struct alecfs_dir_record {
+	char dir_name[ALECFS_FILENAME_MAXLEN];
+    char file_one[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_one_inode_no;
+    char file_two[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_two_inode_no;
+    char file_three[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_three_inode_no;
+};
+
 struct alecfs_sb_info {
 	__u8 version;
 	unsigned long imap;
