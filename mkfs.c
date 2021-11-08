@@ -83,7 +83,7 @@ static int write_data()
 	printf("root_inode written succesfully\n");
 	
 	struct alecfs_dir_record first_file;
-	struct alecfs_dentry readme_dentry = malloc(sizeof(struct alecfs_dentry));
+	struct alecfs_dentry readme_dentry* = malloc(sizeof(struct alecfs_dentry));
 	struct alecfs_dentry empty_dentry;
 	strcpy(first_file.dir_name, "/");
 	strcpy(readme_dentry->file_name, "readme.txt");
