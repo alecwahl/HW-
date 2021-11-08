@@ -47,7 +47,7 @@ static struct alecfs_dir_record *alecfs_find_entry(struct inode *dir, struct den
 	struct buffer_head *bh;
 	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
 	struct super_block *sb = dir->i_sb;
-	const char *name = dentry->d_name.name;
+	const char *name = child_dentry->d_name.name;
 	struct alecfs_dir_record *final_de = NULL;
 	struct alecfs_dir_record *de;
 	int i;
