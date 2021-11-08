@@ -108,7 +108,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
-	struct alecfs_dir_record *de;
+	struct alecfs_dentry *de;
 	struct inode *inode;
 	struct super_block *sb;
 	loff_t pos;
@@ -135,7 +135,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	}
 	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
 
-		de = (struct alecfs_dentry* ((struct alecfs_dir_record*) bh->b_data)->files[ctx->pos]);
+		de = (struct alecfs_dentry*) ((struct alecfs_dir_record*) bh->b_data)->files[ctx->pos];
 
 		/* TODO 5/3: Step over empty entries (de->ino == 0). */
 		if (de->ino == 0) {
