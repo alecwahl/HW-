@@ -4,6 +4,8 @@
 #include <linux/buffer_head.h>
 #include "filesystem.h"
 
+const unsigned int BLOCK_SIZE = 512;
+
 struct alecfs_sb_info {
 	__u8 version;
 	unsigned long imap;
@@ -57,8 +59,8 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		printk(KERN_INFO "simplefs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
 		
 		sb->s_magic 			= ALECFS_MAGIC;
-		//sb->s_fs_info 			= sb_disk;
-        sb->s_blocksize         = ALECFS_BLOCK_SIZE;
+		sb->s_fs_info 			= sb_disk;
+        sb->s_blocksize         = BLOCK_SIZE;
         sb->s_op                = &alecfs_sops;
 
 		struct alecfs_inode *afs_inode;
