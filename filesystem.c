@@ -110,12 +110,12 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	inode = file_inode(filp);
 
 	sb = inode->i_sb;
-	alecfs_inode cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
+	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
 	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
-	if(cur_dir_inode.type != 1){
+	if(cur_dir_inode->type != 1){
 		return 0;
 	}
-	bh = sb_bread(sb, cur_dir_inode.data_block_num);
+	bh = sb_bread(sb, cur_dir_inode->data_block_num);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
 		return -1;
