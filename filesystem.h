@@ -18,23 +18,23 @@
 
 const unsigned long ALEC_BLOCK_SIZE = 512;
 
-typedef struct alecfs_superblock {
+struct alecfs_superblock {
     uint64_t magic;
 	uint64_t block_size;
 	uint64_t version;
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
-typedef struct alecfs_dentry {
+struct alecfs_dentry {
 	char file_name[255];
 	unsigned int inode_num;
 };
 
-typedef struct alecfs_dir_record {
+struct alecfs_dir_record {
 	char dir_name[255];
     struct alecfs_dentry files[5];
 };
-typedef struct alecfs_inode {
+struct alecfs_inode {
 	unsigned int inode_num;
 	unsigned int data_block_num;
 	unsigned int file_size;
