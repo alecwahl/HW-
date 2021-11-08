@@ -128,15 +128,12 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	counter = 0;
 	if(de->file_one_inode_no != 0){
 		dir_emit(ctx, de->file_one, ALECFS_FILENAME_MAXLEN, de->file_one_inode_no, DT_UNKNOWN);
-		counter += 1;
 	}
 	if(de->file_two_inode_no != 0){
 		dir_emit(ctx, de->file_two, ALECFS_FILENAME_MAXLEN, de->file_two_inode_no, DT_UNKNOWN);
-		counter += 1;
 	}
 	if(de->file_three_inode_no != 0){
 		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
-		counter += 1;
 	}
 	return counter;
 	
