@@ -122,6 +122,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	if(cur_dir_inode->type != 1){
 		return 0;
 	}
+	printk(KERN_ALERT "DATABLOCK %u\n",cur_dir_inode->data_block_num);
 	bh = sb_bread(sb, cur_dir_inode->data_block_num);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
