@@ -60,7 +60,6 @@ static struct alecfs_dir_record *alecfs_find_entry(struct inode *dir, struct den
 		printk(KERN_ALERT "could not read block\n");
 		return NULL;
 	}
-	*bhp = bh;
 	de = ((struct alecfs_dir_record *) bh->b_data);
 	if(de->file_one_inode_no != 0){
 		if (strcmp(name, de->file_one) == 0) {
