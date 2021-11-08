@@ -13,8 +13,8 @@ struct alecfs_sb_info {
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
-	printk(KERN_ALERT "Looking up inode %u on disk\n", inode_no);
-	bh = sb_bread(sb, inode_no); 
+	printk(KERN_ALERT "Looking up inode %u on disk\n", ALECFS_INODE_BLOCK + inode_no);
+	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
 	printk(KERN_ALERT "bh returned\n", bh);
 	afs_inode = (struct alecfs_inode *)bh->b_data;
 	printk(KERN_INFO "alecfs root inode_num [%u] data block num [%u] dir_child_count [%u] type [%u].\n", afs_inode->inode_num, afs_inode->inode_num, afs_inode->dir_child_count, afs_inode->type);
@@ -64,10 +64,8 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
         sb->s_magic             = ALECFS_MAGIC;
         sb->s_op                = &alecfs_sops;
         sb->s_time_gran         = 1;
-		
-		alecfs_get_inode(sb, 127);
-		alecfs_get_inode(sb, 128);
-		alecfs_get_inode(sb, 129);
+
+		alecfs_get_inode(sb, 0);
 
 
         return 0;
