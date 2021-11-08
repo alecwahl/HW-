@@ -42,7 +42,7 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static struct alecfs_dir_record *alecfs_find_entry(struct *dentry, struct buffer_head **bhp)
+static struct alecfs_dir_record *alecfs_find_entry(struct inode *dir, struct dentry *child_dentry, unsigned int flags)
 {
 	struct buffer_head *bh;
 	struct inode *dir = dentry->d_parent->d_inode;
