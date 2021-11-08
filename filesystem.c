@@ -45,7 +45,6 @@ static const struct super_operations alecfs_sops = {
 static struct alecfs_dir_record *alecfs_find_entry(struct inode *dir, struct dentry *child_dentry, unsigned int flags)
 {
 	struct buffer_head *bh;
-	struct inode *dir = dentry->d_parent->d_inode;
 	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
 	struct super_block *sb = dir->i_sb;
 	const char *name = dentry->d_name.name;
