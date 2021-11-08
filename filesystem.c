@@ -32,9 +32,6 @@ void alecfs_put_super(struct super_block *sb) {
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags);
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx);
 
-const struct file_operations alecfs_file_operations = {
-};
-
 static const struct super_operations alecfs_sops = {
 	.destroy_inode = alecfs_destory_inode,
 	.put_super = alecfs_put_super,
@@ -45,6 +42,49 @@ static struct inode_operations alecfs_inode_ops = {
 };
 const struct file_operations alecfs_dir_operations = {
 	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
+};
+
+ssize_t hellofs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos) {
+    struct super_block *sb;
+    struct inode *inode;
+    struct buffer_head *bh;
+    char *buffer;
+    int nbytes;
+
+	inode = file_inode(filp);
+	sb = inode->i_sb;
+    printk(KERN_ERR "SYS INODE %u\n", inode->i_ino);
+	struct alecfs_inode *cur_fil_inode = alecfs_get_inode(sb,inode->i_ino);
+    printk(KERN_ERR "INODE %u\n",
+               cur_fil_inode->inode_num);
+    bh = sb_bread(sb, cur_fil_inode->data_block_num);
+    if (!bh) {
+        printk(KERN_ERR "Failed to read data block %llu\n",
+               cur_fil_inode->data_block_num);
+        return 0;
+    }
+
+    buffer = (char *)bh->b_data + *ppos;
+    nbytes = min((size_t)(512 - *ppos), 512);
+
+    if (copy_to_user(buf, buffer, nbytes)) {
+        brelse(bh);
+        printk(KERN_ERR
+               "Error copying file content to userspace buffer\n");
+        return -EFAULT;
+    }
+
+    brelse(bh);
+    *ppos += nbytes;
+    return nbytes;
+}
+
+static const struct file_operations alecfs_file_ops = {
+	.read = alecfs_read,
+};
+
+static const struct inode_operations alecfs_file_inode_ops = {
+	.getattr = simple_getattr, // implemented on my behalf in (fs.h I believe)
 };
 
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
@@ -85,8 +125,8 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 				file_inode->i_ino =  de_inode;
 				inode_init_owner(file_inode, NULL, S_IFREG);
 				file_inode->i_sb = sb;
-				file_inode->i_op = &alecfs_inode_ops;
-				file_inode->i_fop = &alecfs_file_operations;
+				file_inode->i_op = &alecfs_file_inode_ops;
+				file_inode->i_fop = &alecfs_file_ops;
 				d_add(dentry, file_inode);
 				return NULL;
 			}
