@@ -109,20 +109,13 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
 	struct alecfs_dir_record *dir_rec;
-	struct alecfs_dentry *de;
+	struct alecfs_dentry de;
 	struct inode *inode;
 	struct super_block *sb;
-	loff_t pos;
+	int over;
 	
-	pos = filp->f_pos;
-    if (pos) {
-        //use a hack of reading pos to figure if we have filled in data.
-        return 0;
-    }
-	filp->f_pos = 1;
 	
 	inode = file_inode(filp);
-
 	sb = inode->i_sb;
 	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
 	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
@@ -146,12 +139,12 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		 * Use `over` to store return value of dir_emit and exit
 		 * if required.
 		 */
-		over = dir_emit(ctx, de->file_name, ALECFS_FILENAME_MAXLEN, de->inode_num,DT_UNKNOWN);
+		over = dir_emit(ctx, de.file_name, ALECFS_FILENAME_MAXLEN, de.inode_num,DT_UNKNOWN);
 		if (over) {
 			printk(KERN_DEBUG "Read %s from folder %s, ctx->pos: %lld\n",
-				de->file_name,
+				de.file_name,
 				filp->f_path.dentry->d_name.name,
-				ctx->pos);
+				ctx.pos);
 			ctx->pos++;
 			return 0;
 		}
