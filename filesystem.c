@@ -10,6 +10,21 @@ struct alecfs_sb_info {
 	struct buffer_head *sbh;
 };
 
+struct alecfs_inode_info {
+	__u16 data_block;
+	struct inode vfs_inode;
+};
+
+struct alecfs_dir_record {
+	char dir_name[ALECFS_FILENAME_MAXLEN];
+    char file_one[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_one_inode_no;
+    char file_two[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_two_inode_no;
+    char file_three[ALECFS_FILENAME_MAXLEN];
+    uint64_t file_three_inode_no;
+};
+
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
@@ -22,8 +37,10 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned in
 }
 
 static struct inode_operations alecfs_inode_ops = {
+	.lookup = alecfs_lookup,
 };
 const struct file_operations alecfs_dir_operations = {
+	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
 };
 
 void alecfs_destory_inode(struct inode *inode)
@@ -41,6 +58,87 @@ static const struct super_operations alecfs_sops = {
 	.destroy_inode = alecfs_destory_inode,
 	.put_super = alecfs_put_super,
 };
+
+static struct alecfs_dir_record *minfs_find_entry(struct dentry *dentry, struct buffer_head **bhp)
+{
+	struct buffer_head *bh;
+	struct inode *dir = dentry->d_parent->d_inode;
+	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
+	struct super_block *sb = dir->i_sb;
+	const char *name = dentry->d_name.name;
+	struct alecfs_dir_record *final_de = NULL;
+	struct alecfs_dir_record *de;
+	int i;
+
+	/* TODO 6/6: Read parent folder data block (contains dentries).
+	 * Fill bhp with return value.
+	 */
+	bh = sb_bread(sb, mii->data_block);
+	if (bh == NULL) {
+		printk(KERN_ALERT "could not read block\n");
+		return NULL;
+	}
+	*bhp = bh;
+	de = ((struct alecfs_dir_record *) bh->b_data)
+	if(de->file_one_inode_no != 0){
+		if (strcmp(name, de->file_one) == 0) {
+			return de;
+		}
+	}
+	if(de->file_two_inode_no != 0){
+		if (strcmp(name, de->file_two) == 0) {
+			return de;
+		}
+	}
+	if(de->file_three_inode_no != 0){
+		if (strcmp(name, de->file_three) == 0) {
+			return de;
+		}
+	}
+	return final_de;
+}
+
+static struct dentry *minfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags){
+	struct super_block *sb = dir->i_sb;
+	struct alecfs_dir_record *de;
+	struct buffer_head *bh = NULL;
+	struct inode *inode = NULL;
+	
+	alecfs_dir_record
+}
+
+static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
+	struct buffer_head *bh;
+	struct alecfs_dir_record *de;
+	struct alecfs_inode_info *mii;
+	struct inode *inode;
+	struct super_block *sb;
+	
+	inode = file_inode(filp);
+	mii = container_of(inode, struct alecfs_inode_info, vfs_inode);
+	
+	sb = inode->i_sb;
+	bh = sb_bread(sb, mii->data_block);
+	if (bh == NULL) {
+		printk(KERN_ALERT "could not read block\n");
+		err = -1;
+		return -1;
+	}
+	
+	de = (struct alecfs_dir_record *) bh->b_data;
+	
+	if(de->file_one_inode_no != 0){
+		dir_emit(ctx, de->file_one, ALECFS_FILENAME_MAXLEN, de->file_one_inode_no, DT_UNKNOWN);
+	}
+	if(de->file_two_inode_no != 0){
+		dir_emit(ctx, de->file_two, ALECFS_FILENAME_MAXLEN, de->file_two_inode_no, DT_UNKNOWN);
+	}
+	if(de->file_three_inode_no != 0){
+		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
+	}
+	return 0;
+	
+}
 
 static int alecfs_fill_super(struct super_block *sb, void *data, int silent){	
 

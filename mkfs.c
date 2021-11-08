@@ -15,6 +15,7 @@ struct alecfs_superblock {
 	unsigned short inode_block_map[2032];
 };
 struct alecfs_dir_record {
+	char dir_name[255];
     char file_one[255];
     uint64_t file_one_inode_no;
     char file_two[255];
@@ -79,6 +80,7 @@ static int write_data()
 	printf("root_inode written succesfully\n");
 	
 	struct alecfs_dir_record first_file;
+	strcpy(first_file.dir_name, "/");
 	strcpy(first_file.file_one, "readme.txt");
 	first_file.file_one_inode_no = 129;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);

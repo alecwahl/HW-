@@ -24,7 +24,9 @@ typedef struct alecfs_superblock {
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
+
 typedef struct alecfs_dir_record {
+	char dir_name[ALECFS_FILENAME_MAXLEN];
     char file_one[ALECFS_FILENAME_MAXLEN];
     uint64_t file_one_inode_no;
     char file_two[ALECFS_FILENAME_MAXLEN];
