@@ -14,8 +14,6 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned in
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
 	printk(KERN_ALERT "Looking up inode %u on disk\n", inode_no);
-	printk(KERN_ALERT "At address %u",ALECFS_INODE_BLOCK + inode_no);
-	printk(KERN_ALERT "IS SB NULL? %p",sb);
 	bh = sb_bread(sb, inode_no); 
 	printk(KERN_ALERT "bh returned\n", bh);
 	afs_inode = (struct alecfs_inode *)bh->b_data;
