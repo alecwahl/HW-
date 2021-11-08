@@ -15,7 +15,7 @@
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
 
-const unsigned int BLOCK_SIZE = 512;
+const unsigned long BLOCK_SIZE = 512;
 
 typedef struct alecfs_superblock {
     uint64_t magic;
