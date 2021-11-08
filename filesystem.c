@@ -91,15 +91,6 @@ static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry, struct
 	return final_de;
 }
 
-static struct dentry *alecfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags){
-	struct super_block *sb = dir->i_sb;
-	struct alecfs_dir_record *de;
-	struct buffer_head *bh = NULL;
-	struct inode *inode = NULL;
-	
-	alecfs_dir_record
-}
-
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
 	struct alecfs_dir_record *de;
@@ -134,7 +125,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 }
 
 static struct inode_operations alecfs_inode_ops = {
-	.lookup = alecfs_lookup,
+	.lookup = alecfs_find_entry,
 };
 const struct file_operations alecfs_dir_operations = {
 	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
