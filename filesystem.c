@@ -88,10 +88,11 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	// \
 	return simple_lookup(dir, dentry, flags);
 	struct super_block *sb;
-	struct alecfs_dir_record *de;
+	struct alecfs_dir_record de;
 	struct buffer_head *bh;
 	const char *name = dentry->d_name.name;
-
+	struct alecfs_dir_record *dir_rec;
+	
 	sb = dir->i_sb;
 	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
 	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
@@ -106,13 +107,14 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		return NULL;
 	}
 	unsigned int zero = 0;
-	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
+	for (int i = 0; i < ALECFS_NUM_ENTRIES; i++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
-		de = dir_rec->files[ctx->pos];
-		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",ctx->pos,de.inode_num);
+		de = dir_rec->files[i];
+		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",i,de.inode_num);
 		if (de.inode_num != zero) {
 			if(strcmp(name, de->file_name) == 0){
 				d_add(dentry, inode);
+				return NULL;
 			}
 		}
 	}
