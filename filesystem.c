@@ -15,16 +15,6 @@ struct alecfs_inode_info {
 	struct inode vfs_inode;
 };
 
-struct alecfs_dir_record {
-	char dir_name[ALECFS_FILENAME_MAXLEN];
-    char file_one[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_one_inode_no;
-    char file_two[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_two_inode_no;
-    char file_three[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_three_inode_no;
-};
-
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
