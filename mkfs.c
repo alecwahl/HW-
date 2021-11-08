@@ -90,7 +90,7 @@ static int write_data()
 	strcpy(empty_dentry.file_name, "");
 	readme_dentry->inode_num = 1;
 	empty_dentry.inode_num = 0;
-	first_file.files[0] = readme_dentry;
+	memcpy(first_file.files[0], readme_dentry,sizeof(struct alecfs_dentry));
 	first_file.files[1] = empty_dentry;
 	first_file.files[2] = empty_dentry;
 	first_file.files[3] = empty_dentry;
