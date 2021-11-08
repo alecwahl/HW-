@@ -91,10 +91,6 @@ static int write_data()
 	readme_dentry.inode_num = 129;
 	empty_dentry.inode_num = 0;
 	first_file.files[0] = readme_dentry;
-	first_file.files[1] = empty_dentry;
-	first_file.files[2] = empty_dentry;
-	first_file.files[3] = empty_dentry;
-	first_file.files[4] = empty_dentry;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);
 	if(-1 == ret){
 		printf("Error writting root_dir to the device");
