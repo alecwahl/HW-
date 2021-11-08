@@ -131,7 +131,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[ctx->pos];
 
-		if (de->inode_num == 0) {
+		if (de.inode_num == 0) {
 			continue;
 		}
 
@@ -144,7 +144,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 			printk(KERN_DEBUG "Read %s from folder %s, ctx->pos: %lld\n",
 				de.file_name,
 				filp->f_path.dentry->d_name.name,
-				ctx.pos);
+				ctx->pos);
 			ctx->pos++;
 			return 0;
 		}
