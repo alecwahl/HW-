@@ -42,7 +42,9 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static struct dentry *alecfs_find_entry(struct inode *dir, struct dentry *child_dentry, unsigned int flags)
+static struct dentry *alecfs_lookup(struct inode *dir,
+                              struct dentry *child_dentry,
+                              unsigned int flags) {
 {
 	struct buffer_head *bh;
 	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
@@ -112,7 +114,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 }
 
 static struct inode_operations alecfs_inode_ops = {
-	.lookup = alecfs_find_entry,
+	.lookup = alecfs_lookup,
 };
 const struct file_operations alecfs_dir_operations = {
 	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
