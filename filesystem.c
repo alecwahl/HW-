@@ -95,7 +95,6 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	bh = sb_bread(sb, mii->data_block);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
-		err = -1;
 		return -1;
 	}
 	
