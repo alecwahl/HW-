@@ -154,7 +154,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
 		counter++;
 	}
-	return counter;
+	return 0;
 	
 }
 

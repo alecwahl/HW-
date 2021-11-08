@@ -14,15 +14,16 @@ struct alecfs_superblock {
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
+struct alecfs_dentry {
+	char file_name[255];
+	uint64_t inode_num;
+}
+
 struct alecfs_dir_record {
 	char dir_name[255];
-    char file_one[255];
-    uint64_t file_one_inode_no;
-    char file_two[255];
-    uint64_t file_two_inode_no;
-    char file_three[255];
-    uint64_t file_three_inode_no;
+    alecfs_dentry files[5];
 };
+
 struct alecfs_inode {
 	unsigned int inode_num;
 	unsigned int data_block_num;
@@ -30,6 +31,8 @@ struct alecfs_inode {
 	unsigned int dir_child_count;
 	unsigned int type;
 };
+
+
 
 
 const unsigned int fist_data_block = 16;
@@ -80,9 +83,11 @@ static int write_data()
 	printf("root_inode written succesfully\n");
 	
 	struct alecfs_dir_record first_file;
+	struct alecfs_dentry readme_dentry;
 	strcpy(first_file.dir_name, "/");
-	strcpy(first_file.file_one, "readme.txt");
-	first_file.file_one_inode_no = 129;
+	strcpy(readme_dentry.file_name, "readme.txt");
+	readme_dentry.inode_num = 129;
+	first_file.files[0] = readme_dentry;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);
 	if(-1 == ret){
 		printf("Error writting root_dir to the device");
