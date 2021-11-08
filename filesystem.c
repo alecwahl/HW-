@@ -112,6 +112,12 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct inode *inode;
 	struct super_block *sb;
 	
+	pos = filp->f_pos;
+    if (pos) {
+        //use a hack of reading pos to figure if we have filled in data.
+        return 0;
+    }
+	
 	inode = file_inode(filp);
 
 	sb = inode->i_sb;
@@ -128,22 +134,23 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	printk(KERN_ALERT "Got here\n");
 	de = (struct alecfs_dir_record *) bh->b_data;
 	printk(KERN_ALERT "%s\n",de->dir_name);
-	int counter;
-	counter = 0;
 	printk(KERN_ALERT "%u\n",de->file_one_inode_no);
 	if(de->file_one_inode_no != 0){
 		printk(KERN_ALERT "%s\n",de->file_one);
 		dir_emit(ctx, de->file_one, ALECFS_FILENAME_MAXLEN, de->file_one_inode_no, DT_UNKNOWN);
+		filp->f_pos += sizeof(struct alecfs_dir_record);
 	}
 	//printk(KERN_ALERT "%u\n",de->file_two_inode_no);
 	if(de->file_two_inode_no != 0){
 		dir_emit(ctx, de->file_two, ALECFS_FILENAME_MAXLEN, de->file_two_inode_no, DT_UNKNOWN);
+		filp->f_pos += sizeof(struct alecfs_dir_record);
 	}
 	//printk(KERN_ALERT "%u\n",de->file_three_inode_no);
 	if(de->file_three_inode_no != 0){
 		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
+		filp->f_pos += sizeof(struct alecfs_dir_record);
 	}
-	return counter;
+	return 0;
 	
 }
 
