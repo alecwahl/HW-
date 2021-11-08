@@ -114,6 +114,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct super_block *sb;
 	
 	inode = file_inode(filp);
+	printk(KERN_ALERT "INODE %\n",inode->i_ino);
 	mii = container_of(inode, struct alecfs_inode_info, vfs_inode);
 	
 	sb = inode->i_sb;
