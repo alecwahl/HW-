@@ -44,7 +44,7 @@ const struct file_operations alecfs_dir_operations = {
 	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
 };
 
-ssize_t hellofs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos) {
+ssize_t alecfs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos) {
     struct super_block *sb;
     struct inode *inode;
     struct buffer_head *bh;
