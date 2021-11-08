@@ -87,7 +87,8 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	/* TODO 6/1: Comment line. */
 	// \
 	return simple_lookup(dir, dentry, flags);
-
+	return NULL;
+	/*
 	struct super_block *sb = dir->i_sb;
 	struct alecfs_dir_record *de;
 	struct buffer_head *bh = NULL;
@@ -102,6 +103,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	printk(KERN_ALERT "looked up dentry %s\n", dentry->d_name.name);
 
 	return NULL;
+	*/
 }
 
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
@@ -122,17 +124,21 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	}
 	printk(KERN_ALERT "Got here\n");
 	de = (struct alecfs_dir_record *) bh->b_data;
-	
+	int counter;
+	counter = 0;
 	if(de->file_one_inode_no != 0){
 		dir_emit(ctx, de->file_one, ALECFS_FILENAME_MAXLEN, de->file_one_inode_no, DT_UNKNOWN);
+		counter += 1;
 	}
 	if(de->file_two_inode_no != 0){
 		dir_emit(ctx, de->file_two, ALECFS_FILENAME_MAXLEN, de->file_two_inode_no, DT_UNKNOWN);
+		counter += 1;
 	}
 	if(de->file_three_inode_no != 0){
 		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
+		counter += 1;
 	}
-	return 0;
+	return counter;
 	
 }
 
