@@ -96,18 +96,10 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	dentry->d_op = sb->s_root->d_op;
 
 	de = alecfs_find_entry(dentry, &bh);
-	if (de != NULL) {
-		printk(KERN_DEBUG "getting entry: name: %s, ino: %d\n",
-			de->name, de->ino);
-		inode = minfs_iget(sb, de->ino);
-		if (IS_ERR(inode))
-			return ERR_CAST(inode);
-	}
-
 	d_add(dentry, inode);
 	brelse(bh);
 
-	printk(KERN_DEBUG "looked up dentry %s\n", dentry->d_name.name);
+	printk(KERN_ALERT "looked up dentry %s\n", dentry->d_name.name);
 
 	return NULL;
 
