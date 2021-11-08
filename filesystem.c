@@ -88,7 +88,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	// \
 	return simple_lookup(dir, dentry, flags);
 	struct super_block *sb;
-	struct alecfs_dir_record de;
+	struct alecfs_dentry de;
 	struct buffer_head *bh;
 	const char *name = dentry->d_name.name;
 	struct alecfs_dir_record *dir_rec;
