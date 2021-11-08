@@ -62,7 +62,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
         sb->s_op                = &alecfs_sops;
 
 		struct alecfs_inode *afs_inode;
-		bh = sb_bread(sb, 64);
+		bh = sb_bread(sb, 0);
 		afs_inode = (struct alecfs_inode *)bh->b_data;
 		printk(KERN_INFO "alecfs root inode_num [%u] data block num [%u] dir_child_count [%u] type [%u].\n", afs_inode->inode_num, afs_inode->inode_num, afs_inode->dir_child_count, afs_inode->type);
 		alecfs_get_inode(sb, 0);
