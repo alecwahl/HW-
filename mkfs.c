@@ -16,7 +16,7 @@ struct alecfs_superblock {
 };
 struct alecfs_dentry {
 	char file_name[255];
-	uint64_t inode_num;
+	unsigned int inode_num;
 };
 
 struct alecfs_dir_record {
@@ -89,7 +89,7 @@ static int write_data()
 	strcpy(readme_dentry.file_name, "readme.txt");
 	strcpy(empty_dentry.file_name, "");
 	readme_dentry.inode_num = 129;
-	empty_dentry.inode_num = 9999;
+	empty_dentry.inode_num = 0;
 	first_file.files[0] = readme_dentry;
 	first_file.files[1] = empty_dentry;
 	first_file.files[2] = empty_dentry;
