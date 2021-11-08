@@ -42,27 +42,28 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static struct dentry *alecfs_lookup(struct inode *dir,
-                              struct dentry *child_dentry,
-                              unsigned int flags) {
-{
+static struct alecfs_dir_entry *alecfs_find_entry(struct dentry *dentry,struct buffer_head **bhp)
+{	
 	struct buffer_head *bh;
+	struct inode *dir = dentry->d_parent->d_inode;
 	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
 	struct super_block *sb = dir->i_sb;
-	const char *name = child_dentry->d_name.name;
-	struct alecfs_dir_record *final_de = NULL;
-	struct alecfs_dir_record *de;
-	int i;
+	const char *name = dentry->d_name.name;
+	struct alecfs_dir_entry *final_de = NULL;
+	struct alecfs_dir_entry *de;
 
 	/* TODO 6/6: Read parent folder data block (contains dentries).
 	 * Fill bhp with return value.
 	 */
 	bh = sb_bread(sb, mii->data_block);
 	if (bh == NULL) {
-		printk(KERN_ALERT "could not read block\n");
+		printk(LOG_LEVEL "could not read block\n");
 		return NULL;
 	}
-	de = ((struct alecfs_dir_record *) bh->b_data);
+	*bhp = bh;
+	
+	de = (struct alecfs_dir_record *) bh->b_data;
+	
 	if(de->file_one_inode_no != 0){
 		if (strcmp(name, de->file_one) == 0) {
 			return de;
@@ -78,8 +79,37 @@ static struct dentry *alecfs_lookup(struct inode *dir,
 			return de;
 		}
 	}
+
 	return final_de;
 }
+
+static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
+	/* TODO 6/1: Comment line. */
+	// \
+	return simple_lookup(dir, dentry, flags);
+
+	struct super_block *sb = dir->i_sb;
+	struct alecfs_dir_entry *de;
+	struct buffer_head *bh = NULL;
+	struct inode *inode = NULL;
+
+	dentry->d_op = sb->s_root->d_op;
+
+	de = minfs_find_entry(dentry, &bh);
+	if (de != NULL) {
+		printk(KERN_DEBUG "getting entry: name: %s, ino: %d\n",
+			de->name, de->ino);
+		inode = minfs_iget(sb, de->ino);
+		if (IS_ERR(inode))
+			return ERR_CAST(inode);
+	}
+
+	d_add(dentry, inode);
+	brelse(bh);
+
+	printk(KERN_DEBUG "looked up dentry %s\n", dentry->d_name.name);
+
+	return NULL;
 
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
