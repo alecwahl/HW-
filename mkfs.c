@@ -58,7 +58,7 @@ static int write_data()
 	sb.version = 1;
 	sb.block_size = 512;
 	
-	int fd = open("/dev/mmcblk0p3", O_RDWR);
+	int fd = open("/dev/mmcblk0p3", O_RDWR, 0777);
 	if (fd == -1) {
 		printf("Error opening the device");
 		return -1;
