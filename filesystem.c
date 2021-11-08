@@ -53,7 +53,7 @@ ssize_t alecfs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppo
 
 	inode = file_inode(filp);
 	sb = inode->i_sb;
-    printk(KERN_ERR "SYS INODE %llu\n", inode->i_ino);
+    printk(KERN_ERR "SYS INODE %lu\n", inode->i_ino);
 	struct alecfs_inode *cur_fil_inode = alecfs_get_inode(sb, 1936287861 - inode->i_ino);
     printk(KERN_ERR "INODE %u\n",
                cur_fil_inode->inode_num);
