@@ -86,9 +86,15 @@ static int write_data()
 	struct alecfs_dentry readme_dentry;
 	struct alecfs_dentry empty_dentry;
 	strcpy(first_file.dir_name, "/");
+	strcpy(readme_dentry.file_name, "readme.txt");
+	strcpy(empty_dentry.file_name, "");
+	readme_dentry.inode_num = 129;
+	empty_dentry.inode_num = 9999;
 	first_file.files[0] = readme_dentry;
-	strcpy(first_file.files[0].file_name, "readme.txt");
-	first_file.files[0].inode_num = 129;
+	first_file.files[1] = empty_dentry;
+	first_file.files[2] = empty_dentry;
+	first_file.files[3] = empty_dentry;
+	first_file.files[4] = empty_dentry;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);
 	if(-1 == ret){
 		printf("Error writting root_dir to the device");
