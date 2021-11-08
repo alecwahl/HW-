@@ -62,7 +62,7 @@ static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry, struct
 		return NULL;
 	}
 	*bhp = bh;
-	de = ((struct alecfs_dir_record *) bh->b_data)
+	de = ((struct alecfs_dir_record *) bh->b_data);
 	if(de->file_one_inode_no != 0){
 		if (strcmp(name, de->file_one) == 0) {
 			return de;
