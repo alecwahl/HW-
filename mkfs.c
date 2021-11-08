@@ -88,7 +88,7 @@ static int write_data()
 	strcpy(first_file.dir_name, "/");
 	strcpy(readme_dentry.file_name, "readme.txt");
 	strcpy(empty_dentry.file_name, "");
-	readme_dentry.inode_num = 129;
+	readme_dentry.inode_num = 1;
 	empty_dentry.inode_num = 0;
 	first_file.files[0] = readme_dentry;
 	first_file.files[1] = empty_dentry;
@@ -103,7 +103,7 @@ static int write_data()
 	printf("root_dir written succesfully\n");
 	
 	struct alecfs_inode readme;
-	readme.inode_num = 129;
+	readme.inode_num = 1;
 	readme.data_block_num = 17;
 	readme.dir_child_count = 0;
 	readme.type = 0;
