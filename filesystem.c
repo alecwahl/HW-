@@ -57,7 +57,7 @@ static struct alecfs_dir_entry *alecfs_find_entry(struct dentry *dentry,struct b
 	 */
 	bh = sb_bread(sb, mii->data_block);
 	if (bh == NULL) {
-		printk(LOG_LEVEL "could not read block\n");
+		printk(KERN_ALERT "could not read block\n");
 		return NULL;
 	}
 	*bhp = bh;
