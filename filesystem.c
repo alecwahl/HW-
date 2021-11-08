@@ -94,7 +94,8 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	struct super_block *sb;
 	struct alecfs_dentry de;
 	struct buffer_head *bh;
-	const char *name = dentry->d_name.name;
+	const char *name;
+	name = dentry->d_name.name;
 	struct alecfs_dir_record *dir_rec;
 	
 	sb = dir->i_sb;
