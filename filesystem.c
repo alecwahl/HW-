@@ -39,6 +39,8 @@ static const struct super_operations alecfs_sops = {
 
 static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry,struct buffer_head **bhp)
 {	
+
+	/*
 	struct buffer_head *bh;
 	struct inode *dir = dentry->d_parent->d_inode;
 	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
@@ -46,10 +48,10 @@ static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry,struct 
 	const char *name = dentry->d_name.name;
 	struct alecfs_dir_record *final_de = NULL;
 	struct alecfs_dir_record *de;
-
+	*/
 	/* TODO 6/6: Read parent folder data block (contains dentries).
 	 * Fill bhp with return value.
-	 */
+	 
 	bh = sb_bread(sb, mii->data_block);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
@@ -76,6 +78,9 @@ static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry,struct 
 	}
 
 	return final_de;
+	*/
+	return NULL;
+	
 }
 
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
