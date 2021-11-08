@@ -37,52 +37,6 @@ static const struct super_operations alecfs_sops = {
 	.put_super = alecfs_put_super,
 };
 
-static struct alecfs_dir_record *alecfs_find_entry(struct dentry *dentry,struct buffer_head **bhp)
-{	
-
-	/*
-	struct buffer_head *bh;
-	struct inode *dir = dentry->d_parent->d_inode;
-	struct alecfs_inode_info *mii = container_of(dir, struct alecfs_inode_info, vfs_inode);
-	struct super_block *sb = dir->i_sb;
-	const char *name = dentry->d_name.name;
-	struct alecfs_dir_record *final_de = NULL;
-	struct alecfs_dir_record *de;
-	*/
-	/* TODO 6/6: Read parent folder data block (contains dentries).
-	 * Fill bhp with return value.
-	 
-	bh = sb_bread(sb, mii->data_block);
-	if (bh == NULL) {
-		printk(KERN_ALERT "could not read block\n");
-		return NULL;
-	}
-	*bhp = bh;
-	
-	de = (struct alecfs_dir_record *) bh->b_data;
-	
-	if(de->file_one_inode_no != 0){
-		if (strcmp(name, de->file_one) == 0) {
-			return de;
-		}
-	}
-	if(de->file_two_inode_no != 0){
-		if (strcmp(name, de->file_two) == 0) {
-			return de;
-		}
-	}
-	if(de->file_three_inode_no != 0){
-		if (strcmp(name, de->file_three) == 0) {
-			return de;
-		}
-	}
-
-	return final_de;
-	*/
-	return NULL;
-	
-}
-
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
 	/* TODO 6/1: Comment line. */
 	// \
@@ -114,7 +68,15 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",i,de.inode_num);
 		if (de.inode_num != zero) {
 			if(strcmp(name, de.file_name) == 0){
-				d_add(dentry, dir);
+				struct alecfs_inode *file_alecfs_inode =  alecfs_get_inode(sb, de.inode_num);
+				struct inode *file_inode;
+				file_inode = new_inode(sb);
+				file_inode->i_ino =  de.inode_num;
+				inode_init_owner(file_inode, NULL, IFREG);
+				file_inode->i_sb = sb;
+				file_inode->i_op = &alecfs_inode_ops;
+				file_inode->i_fop = &alecfs_file_operations;
+				d_add(dentry, file_inode);
 				return NULL;
 			}
 		}
