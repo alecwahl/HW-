@@ -23,7 +23,7 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned in
 
 static struct inode_operations alecfs_inode_ops = {
 };
-const struct file_operations simplefs_dir_operations = {
+const struct file_operations alec_dir_operations = {
 };
 
 void alecfs_destory_inode(struct inode *inode)
@@ -48,6 +48,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
         struct inode *inode;
 		struct buffer_head *bh;
 		struct alecfs_superblock *sb_disk;
+		struct alecfs_inode *root_alecfs_inode;
 		
 		bh = sb_bread(sb, 0);
 		sb_disk = (struct alecfs_superblock *)bh->b_data;
@@ -55,16 +56,24 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		
 		printk(KERN_INFO "The magic number obtained in disk is: [%llu]\n",sb_disk->magic);
 		printk(KERN_INFO "simplefs filesystem of version [%llu] formatted with a block size of [%llu] detected in the device.\n", sb_disk->version, sb_disk->block_size);
-		sb_set_blocksize(sb, 512);
+		sb_set_blocksize(sb, ALEC_BLOCK_SIZE);
 		sb->s_magic 			= ALECFS_MAGIC;
 		sb->s_fs_info 			= sb_disk;
-        sb->s_blocksize         = 512;
-		sb->s_maxbytes          = 512;
+        sb->s_blocksize         = ALEC_BLOCK_SIZE;
+		sb->s_maxbytes          = ALEC_BLOCK_SIZE;
 		sb->s_blocksize_bits	= 9;
         sb->s_op                = &alecfs_sops;
 
-		alecfs_get_inode(sb, 0);
+		root_alecfs_inode = alecfs_get_inode(sb, 0);
+		root_inode = new_inode(sb);
+		root_inode->i_ino =  0;
+		inode_init_owner(root_inode, NULL, S_IFDIR);
+		root_inode->i_sb = sb;
+		root_inode->i_op = &alec_inode_ops;
+		root_inode->i_fop = &alec_dir_operations;
 
+		root_inode->i_private = root_alecfs_inode;
+		sb->s_root = d_make_root(root_inode);	
 
         return 0;
 }
