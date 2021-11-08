@@ -17,7 +17,7 @@ struct alecfs_superblock {
 struct alecfs_dentry {
 	char file_name[255];
 	uint64_t inode_num;
-}
+};
 
 struct alecfs_dir_record {
 	char dir_name[255];
