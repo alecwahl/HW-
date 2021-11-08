@@ -58,7 +58,7 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		sb->s_magic 			= ALECFS_MAGIC;
 		sb->s_fs_info 			= sb_disk;
         sb->s_blocksize         = 512;
-		sb->s_blocksize_bits	= 9
+		sb->s_blocksize_bits	= 9;
         sb->s_op                = &alecfs_sops;
 
 		struct alecfs_inode *afs_inode;
