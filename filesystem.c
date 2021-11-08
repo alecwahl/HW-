@@ -97,6 +97,9 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	struct alecfs_inode *cur_dir_inode;
 	int i;
 	unsigned int zero;
+	unsigned int de_inode;
+	struct alecfs_inode *file_alecfs_inode;
+	struct inode *file_inode;
 	zero = 0;
 	
 	name = dentry->d_name.name;
@@ -117,12 +120,11 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	for (i = 0; i < ALECFS_NUM_ENTRIES; i++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[i];
-		unsigned int de_inode = de.inode_num;
+		de_inode = de.inode_num;
 		printk(KERN_ALERT "DE %lu, DE->Inode %u\n",i,de_inode);
 		if (de_inode != zero) {
 			if(strcmp(name, de.file_name) == 0){
-				struct alecfs_inode *file_alecfs_inode =  alecfs_get_inode(sb, 1936287861 - de_inode);
-				struct inode *file_inode;
+				file_alecfs_inode =  alecfs_get_inode(sb, 1936287861 - de_inode);
 				file_inode = new_inode(sb);
 				file_inode->i_ino =  1936287861 - de_inode;
 				inode_init_owner(file_inode, NULL, S_IFREG);
