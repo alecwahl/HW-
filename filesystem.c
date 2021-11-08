@@ -122,7 +122,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 				struct alecfs_inode *file_alecfs_inode =  alecfs_get_inode(sb, 1936287861 - de_inode);
 				struct inode *file_inode;
 				file_inode = new_inode(sb);
-				file_inode->i_ino =  de_inode;
+				file_inode->i_ino =  1936287861 - de_inode;
 				inode_init_owner(file_inode, NULL, S_IFREG);
 				file_inode->i_sb = sb;
 				file_inode->i_op = &alecfs_file_inode_ops;
