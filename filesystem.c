@@ -133,28 +133,31 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		printk(KERN_ALERT "could not read block\n");
 		return -1;
 	}
-	printk(KERN_ALERT "Got here\n");
-	de = (struct alecfs_dir_record *) bh->b_data;
-	printk(KERN_ALERT "%s\n",de->dir_name);
-	printk(KERN_ALERT "%u\n",de->file_one_inode_no);
-	int counter;
-	counter = 0;
-	if(de->file_one_inode_no != 0){
-		printk(KERN_ALERT "%s\n",de->file_one);
-		dir_emit(ctx, de->file_one, ALECFS_FILENAME_MAXLEN, de->file_one_inode_no, DT_UNKNOWN);
-		counter++;
+	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
+
+		de = (struct alecfs_dentry* ((struct alecfs_dir_record*) bh->b_data)->files[ctx->pos]);
+
+		/* TODO 5/3: Step over empty entries (de->ino == 0). */
+		if (de->ino == 0) {
+			continue;
+		}
+
+		/*
+		 * Use `over` to store return value of dir_emit and exit
+		 * if required.
+		 */
+		over = dir_emit(ctx, de->name, MINFS_NAME_LEN, de->ino,
+				DT_UNKNOWN);
+		if (over) {
+			printk(KERN_DEBUG "Read %s from folder %s, ctx->pos: %lld\n",
+				de->name,
+				filp->f_path.dentry->d_name.name,
+				ctx->pos);
+			ctx->pos++;
+			goto done;
+		}
 	}
-	//printk(KERN_ALERT "%u\n",de->file_two_inode_no);
-	if(de->file_two_inode_no != 0){
-		dir_emit(ctx, de->file_two, ALECFS_FILENAME_MAXLEN, de->file_two_inode_no, DT_UNKNOWN);
-		counter++;
-	}
-	//printk(KERN_ALERT "%u\n",de->file_three_inode_no);
-	if(de->file_three_inode_no != 0){
-		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
-		counter++;
-	}
-	return 0;
+
 	
 }
 

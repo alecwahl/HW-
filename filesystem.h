@@ -14,6 +14,7 @@
 #define ALECFS_INODE_BLOCK	128
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
+#define ALECFS_NUM_ENTRIES 5
 
 const unsigned long ALEC_BLOCK_SIZE = 512;
 
@@ -24,15 +25,14 @@ typedef struct alecfs_superblock {
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
+typedef struct alecfs_dentry {
+	char file_name[255];
+	uint64_t inode_num;
+};
 
 typedef struct alecfs_dir_record {
-	char dir_name[ALECFS_FILENAME_MAXLEN];
-    char file_one[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_one_inode_no;
-    char file_two[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_two_inode_no;
-    char file_three[ALECFS_FILENAME_MAXLEN];
-    uint64_t file_three_inode_no;
+	char dir_name[255];
+    struct alecfs_dentry files[5];
 };
 typedef struct alecfs_inode {
 	unsigned int inode_num;
