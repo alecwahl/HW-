@@ -111,6 +111,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct alecfs_dir_record *de;
 	struct inode *inode;
 	struct super_block *sb;
+	loff_t pos;
 	
 	pos = filp->f_pos;
     if (pos) {
