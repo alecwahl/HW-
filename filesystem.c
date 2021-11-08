@@ -107,13 +107,14 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		return NULL;
 	}
 	unsigned int zero = 0;
-	for (int i = 0; i < ALECFS_NUM_ENTRIES; i++) {
+	int i;
+	for (i = 0; i < ALECFS_NUM_ENTRIES; i++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[i];
 		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",i,de.inode_num);
 		if (de.inode_num != zero) {
 			if(strcmp(name, de.file_name) == 0){
-				d_add(dentry, inode);
+				d_add(dentry, dir);
 				return NULL;
 			}
 		}
