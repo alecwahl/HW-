@@ -65,7 +65,7 @@ ssize_t alecfs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppo
     }
 
     buffer = (char *)bh->b_data + *ppos;
-    nbytes = min((size_t)(512 - *ppos), 512);
+    nbytes = min((size_t)(cur_fil_inode->file_size - *ppos), len);
 
     if (copy_to_user(buf, buffer, nbytes)) {
         brelse(bh);

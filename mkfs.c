@@ -102,11 +102,13 @@ static int write_data()
 	}
 	printf("root_dir written succesfully\n");
 	
+	char readme_data[] = "this is my first file in my file system! go me!";
 	struct alecfs_inode readme;
 	readme.inode_num = 1;
 	readme.data_block_num = 17;
 	readme.dir_child_count = 0;
 	readme.type = 0;
+	readme.file_size = sizeof(readme_data);
 
 	ret = write_to_dev(129, &readme, sizeof(readme), fd);
 	if(-1 == ret){
@@ -114,7 +116,6 @@ static int write_data()
 		return -1;
 	}
 	printf("readme inode written succesfully\n");
-	char readme_data[] = "this is my first file in my file system! go me!";
 	ret = write_to_dev(17, &readme_data, sizeof(readme_data), fd);
 	if(-1 == ret){
 		printf("Error writting readme data to the device");
