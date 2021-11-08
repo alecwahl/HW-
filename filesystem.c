@@ -45,7 +45,6 @@ static const struct super_operations alecfs_sops = {
 static int alecfs_fill_super(struct super_block *sb, void *data, int silent){	
 
 		struct alecfs_sb_info *sbi;
-		struct alecfs_superblock *ms;
         struct inode *inode;
 		struct buffer_head *bh;
 		struct alecfs_superblock *sb_disk;
@@ -58,7 +57,8 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		
 		sb->s_magic 			= ALECFS_MAGIC;
 		sb->s_fs_info 			= sb_disk;
-        sb->s_blocksize         = 1024;
+        sb->s_blocksize         = 512;
+		sb->s_blocksize_bits	= 9
         sb->s_op                = &alecfs_sops;
 
 		struct alecfs_inode *afs_inode;
