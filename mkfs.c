@@ -21,7 +21,7 @@ struct alecfs_dentry {
 
 struct alecfs_dir_record {
 	char dir_name[255];
-    alecfs_dentry files[5];
+    struct alecfs_dentry files[5];
 };
 
 struct alecfs_inode {
