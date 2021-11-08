@@ -102,6 +102,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	printk(KERN_ALERT "looked up dentry %s\n", dentry->d_name.name);
 
 	return NULL;
+}
 
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct buffer_head *bh;
