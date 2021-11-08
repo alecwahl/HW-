@@ -131,8 +131,8 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[ctx->pos];
-		printk(KERN_ALERT "DE %lld, DE->Inode %lld\n",ctx->pos,de.inode_num);
-		if (de.inode_num != 0) {
+		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",ctx->pos,de.inode_num);
+		if (de.inode_num != 9999) {
 			/*
 			 * Use `over` to store return value of dir_emit and exit
 			 * if required.

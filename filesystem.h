@@ -27,7 +27,7 @@ typedef struct alecfs_superblock {
 };
 typedef struct alecfs_dentry {
 	char file_name[255];
-	uint64_t inode_num;
+	unsigned int inode_num;
 };
 
 typedef struct alecfs_dir_record {
