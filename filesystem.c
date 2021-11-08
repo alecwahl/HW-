@@ -138,8 +138,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[ctx->pos];
 
-		/* TODO 5/3: Step over empty entries (de->ino == 0). */
-		if (de->ino == 0) {
+		if (de->inode_num == 0) {
 			continue;
 		}
 
@@ -147,18 +146,17 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		 * Use `over` to store return value of dir_emit and exit
 		 * if required.
 		 */
-		over = dir_emit(ctx, de->name, MINFS_NAME_LEN, de->ino,
-				DT_UNKNOWN);
+		over = dir_emit(ctx, de->file_name, ALECFS_FILENAME_MAXLEN, de->inode_num,DT_UNKNOWN);
 		if (over) {
 			printk(KERN_DEBUG "Read %s from folder %s, ctx->pos: %lld\n",
-				de->name,
+				de->file_name,
 				filp->f_path.dentry->d_name.name,
 				ctx->pos);
 			ctx->pos++;
-			goto done;
+			return 0;
 		}
 	}
-
+	return 0;
 	
 }
 
