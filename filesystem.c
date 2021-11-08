@@ -62,7 +62,7 @@ static struct alecfs_dir_entry *alecfs_find_entry(struct dentry *dentry,struct b
 	}
 	*bhp = bh;
 	
-	de = (struct alecfs_dir_record *) bh->b_data;
+	de = (struct alecfs_dir_entry *) bh->b_data;
 	
 	if(de->file_one_inode_no != 0){
 		if (strcmp(name, de->file_one) == 0) {
@@ -95,7 +95,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 
 	dentry->d_op = sb->s_root->d_op;
 
-	de = minfs_find_entry(dentry, &bh);
+	de = alecfs_find_entry(dentry, &bh);
 	if (de != NULL) {
 		printk(KERN_DEBUG "getting entry: name: %s, ino: %d\n",
 			de->name, de->ino);
