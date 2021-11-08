@@ -29,12 +29,22 @@ void alecfs_put_super(struct super_block *sb) {
     return;
 }
 
+static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags);
+static int alecfs_readdir(struct file *filp, struct dir_context *ctx);
+
 const struct file_operations alecfs_file_operations = {
 };
 
 static const struct super_operations alecfs_sops = {
 	.destroy_inode = alecfs_destory_inode,
 	.put_super = alecfs_put_super,
+};
+
+static struct inode_operations alecfs_inode_ops = {
+	.lookup = alecfs_lookup,
+};
+const struct file_operations alecfs_dir_operations = {
+	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
 };
 
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags){
@@ -72,7 +82,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 				struct inode *file_inode;
 				file_inode = new_inode(sb);
 				file_inode->i_ino =  de.inode_num;
-				inode_init_owner(file_inode, NULL, IFREG);
+				inode_init_owner(file_inode, NULL, S IFREG);
 				file_inode->i_sb = sb;
 				file_inode->i_op = &alecfs_inode_ops;
 				file_inode->i_fop = &alecfs_file_operations;
@@ -135,12 +145,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	
 }
 
-static struct inode_operations alecfs_inode_ops = {
-	.lookup = alecfs_lookup,
-};
-const struct file_operations alecfs_dir_operations = {
-	.iterate = alecfs_readdir, // tell a user-space process what files are in this dir
-};
+
 
 static int alecfs_fill_super(struct super_block *sb, void *data, int silent){	
 
