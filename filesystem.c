@@ -69,8 +69,8 @@ static int alecfs_fill_super(struct super_block *sb, void *data, int silent){
 		root_inode->i_ino =  0;
 		inode_init_owner(root_inode, NULL, S_IFDIR);
 		root_inode->i_sb = sb;
-		root_inode->i_op = &alec_inode_ops;
-		root_inode->i_fop = &alec_dir_operations;
+		root_inode->i_op = &alecfs_inode_ops;
+		root_inode->i_fop = &alecfs_dir_operations;
 
 		root_inode->i_private = root_alecfs_inode;
 		sb->s_root = d_make_root(root_inode);	
