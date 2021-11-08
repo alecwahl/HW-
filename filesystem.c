@@ -120,7 +120,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		printk(KERN_ALERT "could not read block\n");
 		return -1;
 	}
-	
+	printk(KERN_ALERT "Got here\n");
 	de = (struct alecfs_dir_record *) bh->b_data;
 	
 	if(de->file_one_inode_no != 0){
