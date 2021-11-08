@@ -152,7 +152,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	//printk(KERN_ALERT "%u\n",de->file_three_inode_no);
 	if(de->file_three_inode_no != 0){
 		dir_emit(ctx, de->file_three, ALECFS_FILENAME_MAXLEN, de->file_three_inode_no, DT_UNKNOWN);
-		counter++
+		counter++;
 	}
 	return counter;
 	
