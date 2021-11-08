@@ -87,23 +87,39 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	/* TODO 6/1: Comment line. */
 	// \
 	return simple_lookup(dir, dentry, flags);
-	return NULL;
-	/*
-	struct super_block *sb = dir->i_sb;
+	struct super_block *sb;
 	struct alecfs_dir_record *de;
-	struct buffer_head *bh = NULL;
-	struct inode *inode = NULL;
+	struct buffer_head *bh;
+	const char *name = dentry->d_name.name;
 
-	dentry->d_op = sb->s_root->d_op;
-
-	de = alecfs_find_entry(dentry, &bh);
-	d_add(dentry, inode);
-	brelse(bh);
+	sb = dir->i_sb;
+	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
+	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
+	
+	if(cur_dir_inode->type != 1){
+		return NULL;
+	}
+	printk(KERN_ALERT "DATABLOCK %u\n",cur_dir_inode->data_block_num);
+	bh = sb_bread(sb, cur_dir_inode->data_block_num);
+	if (bh == NULL) {
+		printk(KERN_ALERT "could not read block\n");
+		return NULL;
+	}
+	unsigned int zero = 0;
+	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
+		dir_rec = (struct alecfs_dir_record*) bh->b_data;
+		de = dir_rec->files[ctx->pos];
+		printk(KERN_ALERT "DE %lld, DE->Inode %u\n",ctx->pos,de.inode_num);
+		if (de.inode_num != zero) {
+			if(strcmp(name, de->file_name) == 0){
+				d_add(dentry, inode);
+			}
+		}
+	}
 
 	printk(KERN_ALERT "looked up dentry %s\n", dentry->d_name.name);
 
 	return NULL;
-	*/
 }
 
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
