@@ -17,7 +17,7 @@ static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned in
 	bh = sb_bread(sb, ALECFS_INODE_BLOCK + inode_no); 
 	afs_inode = (struct alecfs_inode *)bh->b_data;
 	printk(KERN_INFO "alecfs root inode_num [%u] data block num [%u] dir_child_count [%u] type [%u].\n", afs_inode->inode_num, afs_inode->inode_num, afs_inode->dir_child_count, afs_inode->type);
-	printk(KERN_ALERT "Found inode %ld on disk\n", inode_no);
+	printk(KERN_ALERT "Found inode %u on disk\n", inode_no);
 	return afs_inode;
 }
 
