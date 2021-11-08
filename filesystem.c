@@ -78,7 +78,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		printk(KERN_ALERT "DE %d, DE->Inode %llu,%d\n",i,de.inode_num,de.inode_num);
 		if (de.inode_num != zero) {
 			if(strcmp(name, de.file_name) == 0){
-				struct alecfs_inode *file_alecfs_inode =  alecfs_get_inode(sb, 1);
+				struct alecfs_inode *file_alecfs_inode =  alecfs_get_inode(sb, de.inode_num);
 				struct inode *file_inode;
 				file_inode = new_inode(sb);
 				file_inode->i_ino =  de.inode_num;
