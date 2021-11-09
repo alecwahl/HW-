@@ -150,7 +150,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct super_block *sb;
 	int over;
 	struct alecfs_inode *cur_dir_inode;
-	unsigned int zero
+	unsigned int zero;
 	
 	inode = file_inode(filp);
 	sb = inode->i_sb;
