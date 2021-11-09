@@ -21,7 +21,7 @@ struct alecfs_dentry {
 
 struct alecfs_dir_record {
 	char dir_name[255];
-    struct alecfs_dentry files[5];
+    struct alecfs_dentry files[2];
 };
 
 struct alecfs_inode {
@@ -90,11 +90,8 @@ static int write_data()
 	strcpy(empty_dentry.file_name, "");
 	readme_dentry.inode_num = 1;
 	empty_dentry.inode_num = 0;
-	first_file.files[0] = empty_dentry;
+	first_file.files[0] = readme_dentry;
 	first_file.files[1] = empty_dentry;
-	first_file.files[2] = readme_dentry;
-	first_file.files[3] = empty_dentry;
-	first_file.files[4] = empty_dentry;
 	ret = write_to_dev(16, &first_file, sizeof(first_file), fd);
 	if(-1 == ret){
 		printf("Error writting root_dir to the device");
