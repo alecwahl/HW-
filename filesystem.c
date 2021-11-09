@@ -149,11 +149,12 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 	struct inode *inode;
 	struct super_block *sb;
 	int over;
-	
+	struct alecfs_inode *cur_dir_inode;
+	unsigned int zero
 	
 	inode = file_inode(filp);
 	sb = inode->i_sb;
-	struct alecfs_inode *cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
+	cur_dir_inode = alecfs_get_inode(sb,inode->i_ino);
 	printk(KERN_ALERT "INODE %d\n",inode->i_ino);
 	if(cur_dir_inode->type != 1){
 		return 0;
@@ -164,7 +165,7 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 		printk(KERN_ALERT "could not read block\n");
 		return -1;
 	}
-	unsigned int zero = 0;
+	zero = 0;
 	for (; ctx->pos < ALECFS_NUM_ENTRIES; ctx->pos++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[ctx->pos];
