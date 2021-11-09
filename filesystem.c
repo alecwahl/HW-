@@ -4,12 +4,6 @@
 #include <linux/buffer_head.h>
 #include "filesystem.h"
 
-struct alecfs_sb_info {
-	__u8 version;
-	unsigned long imap;
-	struct buffer_head *sbh;
-};
-
 static struct alecfs_inode *alecfs_get_inode(struct super_block *sb, unsigned int inode_no){
 	struct buffer_head *bh;
 	struct alecfs_inode *afs_inode;
@@ -194,8 +188,6 @@ static int alecfs_readdir(struct file *filp, struct dir_context *ctx){
 
 
 static int alecfs_fill_super(struct super_block *sb, void *data, int silent){	
-
-		struct alecfs_sb_info *sbi;
         struct inode *root_inode;
 		struct buffer_head *bh;
 		struct alecfs_superblock *sb_disk;
