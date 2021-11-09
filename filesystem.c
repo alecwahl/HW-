@@ -105,12 +105,12 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	name = dentry->d_name.name;
 	sb = dir->i_sb;
 	cur_dir_inode = alecfs_get_inode(sb,dir->i_ino);
-	printk(KERN_ALERT "INODE %lu\n",dir->i_ino);
+	#printk(KERN_ALERT "INODE %lu\n",dir->i_ino);
 	
 	if(cur_dir_inode->type != 1){
 		return NULL;
 	}
-	printk(KERN_ALERT "DATABLOCK %u\n",cur_dir_inode->data_block_num);
+	#printk(KERN_ALERT "DATABLOCK %u\n",cur_dir_inode->data_block_num);
 	bh = sb_bread(sb, cur_dir_inode->data_block_num);
 	if (bh == NULL) {
 		printk(KERN_ALERT "could not read block\n");
@@ -121,7 +121,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[i];
 		de_inode = de.inode_num;
-		printk(KERN_ALERT "DE %lu, DE->Inode %u\n",i,de_inode);
+		#printk(KERN_ALERT "DE %lu, DE->Inode %u\n",i,de_inode);
 		if (de_inode != zero) {
 			if(strcmp(name, de.file_name) == 0){
 				file_alecfs_inode =  alecfs_get_inode(sb, 1936287861 - de_inode);
