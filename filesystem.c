@@ -17,6 +17,7 @@ void alecfs_put_super(struct super_block *sb) {
 //declare functions I'll use later
 static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, unsigned int flags);
 static int alecfs_readdir(struct file *filp, struct dir_context *ctx);
+ssize_t alecfs_read(struct file *filp, char __user *buf, size_t len, loff_t *ppos) 
 //super block operations
 static const struct super_operations alecfs_sops = {
 	.destroy_inode = alecfs_destory_inode,
