@@ -88,8 +88,8 @@ static int write_data()
 	strcpy(first_file.dir_name, "/");
 	strcpy(readme_dentry.file_name, "readme.txt");
 	strcpy(empty_dentry.file_name, "");
-	readme_dentry.inode_num = 1;
-	empty_dentry.inode_num = 10;
+	readme_dentry.inode_num = 10;
+	empty_dentry.inode_num = 0;
 	first_file.files[0] = empty_dentry;
 	first_file.files[1] = empty_dentry;
 	first_file.files[2] = readme_dentry;
