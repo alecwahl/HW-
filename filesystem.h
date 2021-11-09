@@ -8,6 +8,8 @@
 * There are 2 data blocks, 2 inode blocks, and 8 blocks used by super-block
 * All blocks are 128 bytes large, the total fs is 4096 blocks
 */
+
+//constants
 #define ALECFS_FILENAME_MAXLEN 255
 #define ALECFS_BLOCK_SIZE 512
 #define ALECFS_SUPER_BLOCK	0
@@ -15,9 +17,9 @@
 #define ALECFS_FIRST_DATA_BLOCK	16
 #define ALECFS_MAGIC 101
 #define ALECFS_NUM_ENTRIES 5
-
 const unsigned long ALEC_BLOCK_SIZE = 512;
 
+//super block struct
 struct alecfs_superblock {
     uint64_t magic;
 	uint64_t block_size;
@@ -25,15 +27,17 @@ struct alecfs_superblock {
 	unsigned short data_block_map[2048];
 	unsigned short inode_block_map[2032];
 };
+//dentry struct
 struct alecfs_dentry {
 	char file_name[255];
 	unsigned int inode_num;
 };
-
+//dir record struct
 struct alecfs_dir_record {
 	char dir_name[255];
     struct alecfs_dentry files[2];
 };
+//inode struct 
 struct alecfs_inode {
 	unsigned int inode_num;
 	unsigned int data_block_num;
