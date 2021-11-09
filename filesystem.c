@@ -114,7 +114,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	for (i = 0; i < ALECFS_NUM_ENTRIES; i++) {
 		dir_rec = (struct alecfs_dir_record*) bh->b_data;
 		de = dir_rec->files[i];
-		de_inode = i+1
+		de_inode = i+1;
 		printk(KERN_ALERT "INODE lookup %u\n",de.inode_num);
 		//printk(KERN_ALERT "DE %lu, DE->Inode %u\n",i,de_inode);
 		if (de_inode != zero) {
