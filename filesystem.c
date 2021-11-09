@@ -105,7 +105,7 @@ static struct dentry *alecfs_lookup(struct inode *dir,struct dentry *dentry, uns
 	name = dentry->d_name.name;
 	sb = dir->i_sb;
 	cur_dir_inode = alecfs_get_inode(sb,dir->i_ino);
-	printk(KERN_ALERT "INODE %d\n",dir->i_ino);
+	printk(KERN_ALERT "INODE %lu\n",dir->i_ino);
 	
 	if(cur_dir_inode->type != 1){
 		return NULL;
